@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Is It Office Hours?</title>
+        <style>
+            body {
+                text-align: center;
+            }
+
+            a {
+                color: inherit;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .info {
+                display: block;
+                font-size: 0.5em;
+            }
+
+            #answerNo {
+                color: #aaa;
+            }
+
+            #answer {
+                font-size: 3em;
+            }
+
+            #answerYes {
+                color: #007700;
+            }
+
+            #answerYes .info {
+                color: inherit;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Is It Office Hours?</h1>
+        <h2>Tue, Thu, Sat, Sun 2-7pm Arizona Time</h2>
+        <div id="answer">
+            <p id="answerYes" class="hidden">
+                <span>YES!</span>
+                <span class="info">Join Richard by clicking <a href="https://exeterlms.zoom.us/j/4670127152" target="_blank">HERE!</a></span>
+            </p>
+            <p id="answerNo" class="hidden">
+                <span>Sorry, it's not office hours.</span>
+                <span class="info">but you can visit the <a href="https://woz-u.slack.com/app_redirect?channel=C0ED2ATC7" target="_blank">#fullstack slack channel</a> for assistance from a mentor.</span>
+            </p>
+        </div>
+        <h2>Your Time: <div id="yTime"></div></h2>
+        <h2>Richard's Time: <div id="rTime"></div></h2>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.21/moment-timezone-with-data.min.js"></script>
+        <script>
+            var time, rTime,
+                $time = document.getElementById('yTime'),
+                $rTime = document.getElementById('rTime'),
+                $yes = document.getElementById('answerYes'),
+                $no = document.getElementById('answerNo'),
+                timeFormat = 'dddd, hh:mm:ss A',
+                spanFormat = 'HH:mm',
+                acceptedDays = ['Su', 'Tu', 'Th', 'Sa'],
+                start = moment('13:00', spanFormat),
+                end = moment('13:30', spanFormat);
+            
+            function refresh() {
+                time = moment();
+                rTime = moment().tz('America/Phoenix');
+
+                $time.innerHTML = time.format(timeFormat);
+                $rTime.innerHTML = rTime.format(timeFormat);
+
+                if(acceptedDays.indexOf(rTime.format('dd')) > -1
+                    && rTime.isBetween(start, end))
+                {
+                    $yes.setAttribute('class', '');
+                    $no.setAttribute('class', 'hidden');
+                } else {
+                    $yes.setAttribute('class', 'hidden');
+                    $no.setAttribute('class', '');
+                }
+            };
+
+            setInterval(refresh, 1000);
+            refresh();
+        </script>
+    </body>
+</html>
